@@ -1,0 +1,346 @@
+<Window x:Class="OTPGenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="OTP Generator"
+        SizeToContent="Height"
+        MinHeight="580"
+        Width="460"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseDown="Window_MouseDown">
+
+    <!-- ── Root: drop-shadow container ──────────────────────────────── -->
+    <Border Margin="20"
+            CornerRadius="18"
+            Background="#FFFEF9E7"
+            BorderBrush="#F5E9A0"
+            BorderThickness="1.5">
+
+        <Border.Effect>
+            <DropShadowEffect Color="#CCCCAA" BlurRadius="30" ShadowDepth="6" Opacity="0.35"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Content    -->
+            </Grid.RowDefinitions>
+
+            <!-- ── Close Button ──────────────────────────────────────── -->
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,15,15,0" Width="30" Height="30" 
+                    Cursor="Hand" Click="btnClose_Click" Background="Transparent" BorderThickness="0"
+                    Panel.ZIndex="10">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="closeBorder" CornerRadius="15" Background="Transparent">
+                            <TextBlock Text="✕" FontSize="16" Foreground="#BFA440" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="closeBorder" Property="Background" Value="#FFE0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- ══ Main Content ═════════════════════════════════════════ -->
+            <StackPanel Grid.Row="1" Margin="44,10,41,28">
+                
+                <!-- Title Header -->
+                <TextBlock Text="OTP Generator"
+                           FontFamily="Segoe UI Semibold"
+                           FontSize="28"
+                           Foreground="#DAA520"
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,10"/>
+
+                <TextBlock Text="Generate a one-time password"
+                           FontFamily="Segoe UI"
+                           FontSize="13"
+                           Foreground="#999"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,28"/>
+
+                <!-- ── Error Message ─────────────────────────────────── -->
+                <Border x:Name="ErrorBorder"
+                        CornerRadius="8"
+                        Background="#FFF3CD"
+                        BorderBrush="#FFD700"
+                        BorderThickness="1"
+                        Padding="12,8"
+                        Margin="0,0,0,16"
+                        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="⚠  "
+                                   FontSize="13"
+                                   Foreground="#856404"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock x:Name="txtErrorMessage" Grid.Column="1" Text=""
+                                   FontFamily="Segoe UI"
+                                   FontSize="13"
+                                   Foreground="#856404"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>
+
+                <!-- ── User ID Field ────────────────────────────────── -->
+                <TextBlock Text="User ID"
+                           FontFamily="Segoe UI Semibold"
+                           FontSize="13"
+                           Foreground="#444"
+                           Margin="0,0,0,6"/>
+
+                <Border CornerRadius="10"
+                        BorderThickness="1.5"
+                        Padding="0"
+                        Margin="0,0,0,18">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="#E0D88F"/>
+                            <Setter Property="Background"  Value="White"/>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="👤"
+                                   FontSize="17"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#C8A800"/>
+
+                        <TextBox Grid.Column="1"
+                                 x:Name="txtUserId"
+                                 FontFamily="Segoe UI"
+                                 FontSize="14"
+                                 Foreground="#2C2C2C"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="2,10,12,10"
+                                 CaretBrush="#DAA520"
+                                 VerticalContentAlignment="Center"
+                                 TextChanged="txtUserId_TextChanged">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </Border>
+
+                <!-- ── Date Field ────────────────────────────────── -->
+                <TextBlock Text="Select Date"
+                           FontFamily="Segoe UI Semibold"
+                           FontSize="13"
+                           Foreground="#444"
+                           Margin="0,0,0,6"/>
+
+                <Border CornerRadius="10"
+                        BorderThickness="1.5"
+                        Padding="0"
+                        Margin="0,0,0,28">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="#E0D88F"/>
+                            <Setter Property="Background"  Value="White"/>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="📅"
+                                   FontSize="17"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#C8A800"/>
+
+                        <DatePicker Grid.Column="1"
+                                     x:Name="datePicker"
+                                     FontFamily="Segoe UI"
+                                     FontSize="14"
+                                     Foreground="#2C2C2C"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Padding="2,8,12,8"
+                                     VerticalContentAlignment="Center"
+                                     SelectedDateChanged="datePicker_SelectedDateChanged">
+                        </DatePicker>
+                    </Grid>
+                </Border>
+
+                <!-- ── OTP Field ────────────────────────────────── -->
+                <TextBlock Text="Generated OTP"
+                           FontFamily="Segoe UI Semibold"
+                           FontSize="13"
+                           Foreground="#444"
+                           Margin="0,0,0,6"/>
+
+                <Border CornerRadius="10"
+                        BorderThickness="1.5"
+                        Padding="0"
+                        Margin="0,0,0,28">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="#E0D88F"/>
+                            <Setter Property="Background"  Value="#F9F9F9"/>
+                        </Style>
+                    </Border.Style>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="🔑"
+                                   FontSize="17"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#C8A800"/>
+
+                        <TextBox Grid.Column="1"
+                                 x:Name="txtOTP"
+                                 IsReadOnly="True"
+                                 FontFamily="Segoe UI"
+                                 FontSize="16"
+                                 FontWeight="Bold"
+                                 Foreground="#2C2C2C"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="2,10,12,10"
+                                 CaretBrush="#DAA520"
+                                 VerticalContentAlignment="Center">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <ScrollViewer x:Name="PART_ContentHost" Focusable="False"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </Border>
+
+                <!-- ── Buttons ───────────────────────────────────────── -->
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="14"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Generate Button -->
+                    <Button Grid.Column="0"
+                            x:Name="btnGenerate"
+                            Content="Generate"
+                            Width="150"
+                            Height="46"
+                            FontFamily="Segoe UI Semibold"
+                            FontSize="15"
+                            Foreground="White"
+                            Cursor="Hand"
+                            IsDefault="True"
+                            Click="btnGenerate_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="loginBorder"
+                                        CornerRadius="10"
+                                        Padding="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#FFD700" Offset="0"/>
+                                            <GradientStop Color="#DAA520" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#DAA520" BlurRadius="12"
+                                                          ShadowDepth="3" Opacity="0.5"/>
+                                    </Border.Effect>
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="loginBorder" Property="Opacity" Value="0.88"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="loginBorder" Property="Opacity" Value="0.75"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="loginBorder" Property="Opacity" Value="0.45"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Copy Button -->
+                    <Button Grid.Column="2"
+                            x:Name="btnCopy"
+                            Content="Copy OTP"
+                            Height="46"
+                            Width="150"
+                            FontFamily="Segoe UI Semibold"
+                            FontSize="15"
+                            Foreground="#888"
+                            Cursor="Hand"
+                            Click="btnCopy_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="cancelBorder"
+                                        CornerRadius="10"
+                                        Background="White"
+                                        BorderBrush="#DDD"
+                                        BorderThickness="1.5">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="cancelBorder" Property="Background" Value="#FFF8E1"/>
+                                        <Setter TargetName="cancelBorder" Property="BorderBrush" Value="#FFD700"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="cancelBorder" Property="Background" Value="#FFF0B0"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
