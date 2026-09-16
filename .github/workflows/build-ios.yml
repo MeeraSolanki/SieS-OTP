@@ -38,7 +38,7 @@ jobs:
           if [ -d "OTPGenerator/OTPGenerator.Mobile" ]; then
             cd OTPGenerator
           fi
-          dotnet restore OTPGenerator.Mobile/OTPGenerator.Mobile.csproj
+          dotnet restore OTPGenerator.Mobile/OTPGenerator.Mobile.csproj -p:TargetFramework=net10.0-ios
 
       - name: Build and Package iOS Application
         run: |
