@@ -38,7 +38,7 @@ jobs:
           if [ -d "OTPGenerator/OTPGenerator.Mobile" ]; then
             cd OTPGenerator
           fi
-          dotnet restore OTPGenerator.Mobile/OTPGenerator.Mobile.csproj -p:TargetFramework=net10.0-ios
+          dotnet restore OTPGenerator.Mobile/OTPGenerator.Mobile.csproj -p:BuildIosOnly=true
 
       - name: Build and Package iOS Application
         run: |
@@ -75,6 +75,7 @@ jobs:
               -f net10.0-ios \
               -c "$CONFIG" \
               -r ios-arm64 \
+              -p:BuildIosOnly=true \
               -p:PlatformTarget=ARM64 \
               -p:BuildIpa=true \
               -p:ArchiveOnBuild=true
@@ -84,6 +85,7 @@ jobs:
               -f net10.0-ios \
               -c "$CONFIG" \
               -r ios-arm64 \
+              -p:BuildIosOnly=true \
               -p:PlatformTarget=ARM64 \
               -p:_CodesignAppBundle=false \
               -p:CodesignKey="-" \

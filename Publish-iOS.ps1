@@ -27,6 +27,7 @@ $publishArgs = @(
     "-f", "net10.0-ios",
     "-c", "Release",
     "-r", "ios-arm64",
+    "-p:BuildIosOnly=true",
     "-p:PlatformTarget=ARM64",
     "-p:BuildIpa=true",
     "-p:ArchiveOnBuild=true"
