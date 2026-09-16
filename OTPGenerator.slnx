@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="OTPGenerator/OTPGenerator.csproj" />
+  <Project Path="OTPGenerator.Core/OTPGenerator.Core.csproj" />
+  <Project Path="OTPGenerator.Mobile/OTPGenerator.Mobile.csproj" />
 </Solution>

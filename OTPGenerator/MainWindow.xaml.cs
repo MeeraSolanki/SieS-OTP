@@ -42,19 +42,8 @@ namespace OTPGenerator
             }
 
             HideError();
-            string otp = GenerateOtp(userId, date.Value);
+            string otp = OTPGenerator.Core.OtpService.GenerateOtp(userId, date.Value);
             txtOTP.Text = otp;
-        }
-
-        private string GenerateOtp(string userId, DateTime date)
-        {
-            string s = $"{userId}:{date:yyyyMMdd}";
-            using (SHA256 sHA = SHA256.Create())
-            {
-                byte[] hash = sHA.ComputeHash(Encoding.UTF8.GetBytes(s));
-                int value = BitConverter.ToInt32(hash, 0);
-                return (Math.Abs(value) % 1000000).ToString("D6");
-            }
         }
 
         private void btnCopy_Click(object sender, RoutedEventArgs e)
