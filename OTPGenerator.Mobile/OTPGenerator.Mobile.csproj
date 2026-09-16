@@ -75,7 +75,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OTPGenerator.Core\OTPGenerator.Core.csproj" />
+	  <ProjectReference Include="../OTPGenerator.Core/OTPGenerator.Core.csproj" />
 	</ItemGroup>
 
 </Project>
