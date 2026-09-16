@@ -57,6 +57,10 @@
 		<PlatformTarget Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' and '$(Configuration)' == 'Release'">ARM64</PlatformTarget>
 		<ValidateXcodeVersion>false</ValidateXcodeVersion>
 		<_ValidateXcodeVersion>false</_ValidateXcodeVersion>
+		<Registrar Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">static</Registrar>
+		<MtouchLink Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">None</MtouchLink>
+		<MtouchExtraArgs Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">--nowarn:4162 --nowarn:2431</MtouchExtraArgs>
+		<NoWarn Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">$(NoWarn);IL7000;MT4162;MT2431;NETSDK1144</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
