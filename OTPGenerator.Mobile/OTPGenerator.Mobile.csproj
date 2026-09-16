@@ -55,6 +55,8 @@
 		<!-- iOS Build & Packaging Defaults -->
 		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' and '$(RuntimeIdentifier)' == '' and '$(Configuration)' == 'Release'">ios-arm64</RuntimeIdentifier>
 		<PlatformTarget Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' and '$(Configuration)' == 'Release'">ARM64</PlatformTarget>
+		<ValidateXcodeVersion>false</ValidateXcodeVersion>
+		<_ValidateXcodeVersion>false</_ValidateXcodeVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

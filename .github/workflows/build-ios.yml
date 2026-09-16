@@ -18,11 +18,28 @@ on:
 jobs:
   build-ios:
     name: Build & Package iOS IPA
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Select Xcode Version
+        run: |
+          echo "Available Xcode installations:"
+          ls -ld /Applications/Xcode* || true
+          if [ -d "/Applications/Xcode_16.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.4.app
+          elif [ -d "/Applications/Xcode_16.2.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.2.app
+          elif [ -d "/Applications/Xcode_16.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.1.app
+          elif [ -d "/Applications/Xcode_16.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.0.app
+          elif [ -d "/Applications/Xcode_16.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.app
+          fi
+          xcodebuild -version
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -78,7 +95,9 @@ jobs:
               -p:BuildIosOnly=true \
               -p:PlatformTarget=ARM64 \
               -p:BuildIpa=true \
-              -p:ArchiveOnBuild=true
+              -p:ArchiveOnBuild=true \
+              -p:ValidateXcodeVersion=false \
+              -p:_ValidateXcodeVersion=false
           else
             echo "No Apple Developer signing certificate provided. Building package for ad-hoc / sideloading..."
             dotnet publish OTPGenerator.Mobile/OTPGenerator.Mobile.csproj \
@@ -87,7 +106,9 @@ jobs:
               -r ios-arm64 \
               -p:BuildIosOnly=true \
               -p:PlatformTarget=ARM64 \
-              -p:EnableCodeSigning=false
+              -p:EnableCodeSigning=false \
+              -p:ValidateXcodeVersion=false \
+              -p:_ValidateXcodeVersion=false
           fi
 
       - name: Locate or Assemble .IPA Package
