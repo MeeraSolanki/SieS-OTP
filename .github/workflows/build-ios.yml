@@ -87,9 +87,7 @@ jobs:
               -r ios-arm64 \
               -p:BuildIosOnly=true \
               -p:PlatformTarget=ARM64 \
-              -p:_CodesignAppBundle=false \
-              -p:CodesignKey="-" \
-              -p:CodesignProvision=""
+              -p:EnableCodeSigning=false
           fi
 
       - name: Locate or Assemble .IPA Package
