@@ -1,0 +1,54 @@
+name: Deploy PWA to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Prepare PWA Files
+        run: |
+          mkdir -p _site
+          if [ -d "pwa" ]; then
+            echo "Copying from pwa/"
+            cp -R pwa/* _site/
+          elif [ -d "OTPGenerator/pwa" ]; then
+            echo "Copying from OTPGenerator/pwa/"
+            cp -R OTPGenerator/pwa/* _site/
+          else
+            echo "Error: pwa directory not found"
+            exit 1
+          fi
+          ls -la _site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

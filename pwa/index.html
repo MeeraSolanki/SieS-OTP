@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SieS OTP Generator</title>
+  <meta name="description" content="Generate secure one-time passwords for SieS. Works 100% offline on any device.">
+
+  <!-- PWA & Mobile Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f0f53">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- iOS Specific Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SieS OTP">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- App Header -->
+    <header class="app-header">
+      <img src="icons/icon-192.png" alt="SieS Logo" class="app-logo" width="68" height="68">
+      <h1 class="app-title">SieS OTP</h1>
+      <p class="app-subtitle">Generate a one-time password</p>
+    </header>
+
+    <!-- Main Card -->
+    <main class="otp-card">
+      
+      <!-- Error Banner -->
+      <div id="errorBanner" class="error-banner" role="alert">
+        <span>⚠</span>
+        <span id="lblErrorMessage"></span>
+      </div>
+
+      <!-- User ID Input -->
+      <div class="form-group">
+        <label for="txtUserId" class="form-label">User ID</label>
+        <div class="input-container">
+          <span class="input-icon">👤</span>
+          <input 
+            type="text" 
+            id="txtUserId" 
+            class="form-input" 
+            placeholder="Enter User ID" 
+            autocomplete="off" 
+            autocapitalize="none"
+            spellcheck="false"
+            required>
+        </div>
+      </div>
+
+      <!-- Date Input -->
+      <div class="form-group">
+        <label for="dtpDate" class="form-label">Select Date</label>
+        <div class="input-container">
+          <span class="input-icon">📅</span>
+          <input 
+            type="date" 
+            id="dtpDate" 
+            class="form-input" 
+            required>
+        </div>
+      </div>
+
+      <!-- Generated OTP Output -->
+      <div class="form-group">
+        <label class="form-label">Generated OTP</label>
+        <div class="otp-container">
+          <span class="input-icon">🔑</span>
+          <div id="lblOtp" class="otp-value otp-placeholder">------</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="button-row">
+        <button type="button" id="btnGenerate" class="btn btn-generate">
+          Generate
+        </button>
+        <button type="button" id="btnCopy" class="btn btn-copy">
+          Copy OTP
+        </button>
+      </div>
+
+    </main>
+
+    <!-- iPhone Installation Guide Card -->
+    <div class="install-guide-card">
+      <div class="install-header" onclick="toggleInstallGuide()">
+        <span>📲 How to Install on iPhone</span>
+        <span id="installGuideToggle">▾</span>
+      </div>
+      <div id="installSteps" class="install-steps">
+        <div class="install-step">
+          <span>1.</span> Open this link in <strong>Safari</strong>.
+        </div>
+        <div class="install-step">
+          <span>2.</span> Tap the <strong>Share</strong> button (square with arrow ↑).
+        </div>
+        <div class="install-step">
+          <span>3.</span> Tap <strong>Add to Home Screen</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Offline Status Indicator -->
+    <div class="offline-badge">
+      <span class="status-dot"></span>
+      <span>Works 100% Offline</span>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span>✓</span>
+    <span id="toastMessage">Copied to clipboard!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script>
+    function toggleInstallGuide() {
+      const steps = document.getElementById('installSteps');
+      const toggle = document.getElementById('installGuideToggle');
+      if (steps.style.display === 'none') {
+        steps.style.display = 'flex';
+        toggle.textContent = '▾';
+      } else {
+        steps.style.display = 'none';
+        toggle.textContent = '▸';
+      }
+    }
+  </script>
+</body>
+</html>
